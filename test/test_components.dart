@@ -46,7 +46,7 @@ class EventComponent extends Component {
   );
 }
 ReactComponentFactory eventComponent = registerComponent(() =>
-    new EventComponent()) as ReactComponentFactory;
+    new EventComponent());
 
 class SampleComponent extends Component {
   render() => div(props, [
@@ -58,11 +58,11 @@ class SampleComponent extends Component {
 }
 
 ReactComponentFactory sampleComponent = registerComponent(() =>
-    new SampleComponent()) as ReactComponentFactory;
+    new SampleComponent());
 
 class WrapperComponent extends Component {
   render() => div(props, props['children']);
 }
 
 ReactComponentFactory wrapperComponent = registerComponent(() =>
-    new WrapperComponent()) as ReactComponentFactory;
+    new WrapperComponent());

@@ -59,7 +59,7 @@ class _ClockComponent extends react.Component {
 
   getInitialState() => {'secondsElapsed': 0};
 
-  Map getDefaultProps() => {'refreshRate': 1000};
+  dynamic getDefaultProps() => {'refreshRate': 1000};
 
 
   void componentWillMount() {
@@ -105,7 +105,7 @@ var clockComponent = react.registerComponent(() => new _ClockComponent());
 
 class _ListComponent extends react.Component {
 
-  Map getInitialState() {
+  dynamic getInitialState() {
     return {"items": new List.from([0, 1, 2, 3])};
   }
 
