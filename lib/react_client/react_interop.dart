@@ -8,7 +8,7 @@ import 'dart:html';
 
 import 'package:js/js.dart';
 import 'package:react/react.dart';
-import 'package:react/react_client.dart' show ComponentFactory;
+import 'package:react/react_client.dart' show ComponentFactory, StatelessFunctionalComponent;
 
 typedef ReactElement ReactJsComponentFactory(props, children);
 
@@ -222,6 +222,12 @@ void markChildrenValidated(List<dynamic> children) {
 @JS('_createReactDartComponentClassConfig')
 external ReactClassConfig createReactDartComponentClassConfig(ReactDartInteropStatics dartInteropStatics, ComponentStatics componentStatics);
 
+/// Returns a new JS [ReactClass] for a stateless function component that uses
+/// [dartInteropStatics] and [componentStatics] internally to proxy between
+/// the JS and Dart component calls.
+@JS('_createReactDartStatelessFunctionalComponent')
+external ReactClass createReactDartStatelessFunctionalComponent(ReactDartInteropStatics dartInteropStatics, StatelessFunctionalComponentStatics componentStatics);
+
 /// An object that stores static methods used by all Dart components.
 @JS()
 @anonymous
@@ -249,4 +255,16 @@ class ComponentStatics {
   final ComponentFactory componentFactory;
 
   ComponentStatics(this.componentFactory);
+}
+
+/// An object that stores static methods and information for a specific stateless function component.
+///
+/// This object is made accessible to a component's JS function, which
+/// passes it to certain methods in [ReactDartInteropStatics].
+///
+/// See [ReactDartInteropStatics], [createReactDartStatelessFunctionalComponent].
+class StatelessFunctionalComponentStatics {
+  final StatelessFunctionalComponent component;
+
+  StatelessFunctionalComponentStatics(this.component);
 }

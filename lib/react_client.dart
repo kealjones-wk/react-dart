@@ -26,6 +26,11 @@ final EmptyObject emptyJsMap = new EmptyObject();
 typedef ReactElement ReactComponentFactory(Map props, [dynamic children]);
 typedef Component ComponentFactory();
 
+/// A React component declared using a function that takes in [props] and returns rendered output.
+///
+/// See <https://facebook.github.io/react/docs/components-and-props.html#functional-and-class-components>.
+typedef dynamic StatelessFunctionalComponent(Map props);
+
 /// The type of [Component.ref] specified as a callback.
 ///
 /// See: <https://facebook.github.io/react/docs/more-about-refs.html#the-ref-callback-attribute>
@@ -294,6 +299,17 @@ final ReactDartInteropStatics _dartInteropStatics = (() {
   );
 })();
 
+final ReactDartInteropStatics _functionComponentDartInteropStatics = (() {
+  var zone = Zone.current;
+
+  /// Wrapper for [Component.render].
+  dynamic handleRender(ReactDartComponentInternal internal, StatelessFunctionalComponentStatics componentStatics) => zone.run(() {
+    return componentStatics.component(internal.props);
+  });
+
+  return new ReactDartInteropStatics(handleRender: allowInterop(handleRender));
+})();
+
 /// Returns a new [ReactComponentFactory] which produces a new JS
 /// [`ReactClass` component class](https://facebook.github.io/react/docs/top-level-api.html#react.createclass).
 ReactComponentFactory _registerComponent(ComponentFactory componentFactory, [Iterable<String> skipMethods = const []]) {
@@ -313,6 +329,24 @@ ReactComponentFactory _registerComponent(ComponentFactory componentFactory, [Ite
 
   return new ReactDartComponentFactoryProxy(reactComponentClass);
 }
+
+/// Returns a new [ReactComponentFactory] backing [statelessFunctionComponent].
+ReactComponentFactory registerStatelessFunctionalComponent(StatelessFunctionalComponent statelessFunctionComponent, {
+  String displayName,
+  Map defaultProps: const {},
+}) {
+  var componentStatics = new StatelessFunctionalComponentStatics(statelessFunctionComponent);
+
+  ReactClass jsFunctionComponent = createReactDartStatelessFunctionalComponent(_functionComponentDartInteropStatics, componentStatics)
+    ..displayName = displayName;
+
+  // Cache default props and store them on the ReactClass so they can be used
+  // by ReactDartComponentFactoryProxy and externally.
+  jsFunctionComponent.dartDefaultProps = new Map.unmodifiable(defaultProps);
+
+  return new ReactDartComponentFactoryProxy(jsFunctionComponent);
+}
+
 
 /// Creates ReactJS [ReactElement] instances for DOM components.
 class ReactDomComponentFactoryProxy extends ReactComponentFactoryProxy {
