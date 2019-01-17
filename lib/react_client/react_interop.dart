@@ -284,7 +284,7 @@ bool get inReactDevMode => _inReactDevMode;
 /// [dartInteropStatics] and [componentStatics] internally to proxy between
 /// the JS and Dart component calls.
 @JS('_createReactDartStatelessFunctionalComponent')
-external ReactClass createReactDartStatelessFunctionalComponent(ReactDartInteropStatics dartInteropStatics, StatelessFunctionalComponentStatics componentStatics);
+external ReactClass createReactDartStatelessFunctionalComponent(ReactDartFunctionalInteropStatics dartInteropStatics, StatelessFunctionalComponentStatics componentStatics);
 
 /// An object that stores static methods used by all Dart components.
 @JS()
@@ -301,6 +301,15 @@ class ReactDartInteropStatics {
     _HandleComponentDidUpdate handleComponentDidUpdate,
     _HandleComponentWillUnmount handleComponentWillUnmount,
     _HandleRender handleRender,
+  });
+}
+
+/// An object that stores static methods used by all Dart components.
+@JS()
+@anonymous
+class ReactDartFunctionalInteropStatics {
+  external factory ReactDartFunctionalInteropStatics({
+    dynamic Function(ReactDartComponentInternal, StatelessFunctionalComponentStatics) handleRender,
   });
 }
 

@@ -380,7 +380,7 @@ final ReactDartInteropStatics _dartInteropStatics = (() {
       handleRender: allowInterop(handleRender));
 })();
 
-final ReactDartInteropStatics _functionComponentDartInteropStatics = (() {
+final ReactDartFunctionalInteropStatics _functionComponentDartInteropStatics = (() {
   var zone = Zone.current;
 
   /// Wrapper for [Component.render].
@@ -388,7 +388,7 @@ final ReactDartInteropStatics _functionComponentDartInteropStatics = (() {
     return componentStatics.component(internal.props);
   });
 
-  return new ReactDartInteropStatics(handleRender: allowInterop(handleRender));
+  return new ReactDartFunctionalInteropStatics(handleRender: allowInterop(handleRender));
 })();
 
 /// Creates and returns a new [ReactDartComponentFactoryProxy] from the provided [componentFactory]
@@ -421,7 +421,7 @@ ReactDartComponentFactoryProxy _registerComponent(
 }
 
 /// Returns a new [ReactComponentFactory] backing [statelessFunctionComponent].
-ReactComponentFactory registerStatelessFunctionalComponent(StatelessFunctionalComponent statelessFunctionComponent, {
+ReactComponentFactoryProxy registerStatelessFunctionalComponent(StatelessFunctionalComponent statelessFunctionComponent, {
   String displayName,
   Map defaultProps: const {},
 }) {
