@@ -61,7 +61,7 @@ function _createReactDartComponentClass(dartInteropStatics, componentStatics, js
     }
     render() {
       var result = dartInteropStatics.handleRender(this.dartComponent);
-      if (typeof result === 'undefined') result = null;
+      if (result === undefined) result = null;
       return result;
     }
   }
@@ -94,7 +94,11 @@ function _createReactDartComponentClass(dartInteropStatics, componentStatics, js
 }
 
 function _createReactDartComponentClass2(dartInteropStatics, componentStatics, jsConfig) {
-  class ReactDartComponent2 extends React.Component {
+  var BaseComponent = React.Component;
+  if (jsConfig.isPureReactComponent) {
+    BaseComponent = React.PureComponent;
+  }
+  class ReactDartComponent2 extends BaseComponent {
     constructor(props, context) {
       super(props, context);
       // TODO combine these two calls into one
@@ -104,6 +108,7 @@ function _createReactDartComponentClass2(dartInteropStatics, componentStatics, j
     componentDidMount() {
       dartInteropStatics.handleComponentDidMount(this.dartComponent);
     }
+
     shouldComponentUpdate(nextProps, nextState) {
       return dartInteropStatics.handleShouldComponentUpdate(this.dartComponent, nextProps, nextState);
     }
@@ -131,8 +136,23 @@ function _createReactDartComponentClass2(dartInteropStatics, componentStatics, j
     }
     render() {
       var result = dartInteropStatics.handleRender(this.dartComponent, this.props, this.state, this.context);
-      if (typeof result === 'undefined') result = null;
+      if (result === undefined) result = null;
       return result;
+    }
+  }
+
+  if (jsConfig) {
+    if (jsConfig.isPureReactComponent) {
+      jsConfig.skipMethods.push('shouldComponentUpdate');
+    }
+    if (jsConfig.contextType) {
+      ReactDartComponent2.contextType = jsConfig.contextType;
+    }
+    if (jsConfig.defaultProps) {
+      ReactDartComponent2.defaultProps = jsConfig.defaultProps;
+    }
+    if (jsConfig.propTypes) {
+      ReactDartComponent2.propTypes = jsConfig.propTypes;
     }
   }
 
@@ -144,18 +164,6 @@ function _createReactDartComponentClass2(dartInteropStatics, componentStatics, j
       delete ReactDartComponent2.prototype[method];
     }
   });
-
-  if (jsConfig) {
-    if (jsConfig.contextType) {
-      ReactDartComponent2.contextType = jsConfig.contextType;
-    }
-    if (jsConfig.defaultProps) {
-      ReactDartComponent2.defaultProps = jsConfig.defaultProps;
-    }
-    if (jsConfig.propTypes) {
-      ReactDartComponent2.propTypes = jsConfig.propTypes;
-    }
-  }
 
   return ReactDartComponent2;
 }

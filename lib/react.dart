@@ -478,6 +478,13 @@ abstract class Component {
   dynamic render();
 }
 
+/// Top-level ReactJS [PureComponent class](https://reactjs.org/docs/react-api.html#reactpurecomponent)
+abstract class PureComponent extends Component2 {
+  /// Forces react to implement it a shallow prop and state comparison in [shouldComponentUpdate].
+  @override
+  bool get isPureReactComponent => true;
+}
+
 /// Top-level ReactJS [Component class](https://reactjs.org/docs/react-component.html)
 /// which provides the [ReactJS Component API](https://reactjs.org/docs/react-component.html#reference).
 ///
@@ -505,6 +512,10 @@ abstract class Component {
 ///
 /// 4. Supports React 16 [context]
 abstract class Component2 implements Component {
+
+  /// Forces react to implement it a shallow prop and state comparison in [shouldComponentUpdate].
+  bool get isPureReactComponent => false;
+
   /// Accessed once and cached when instance is created. The [contextType] property on a class can be assigned
   /// a [ReactDartContext] object created by [React.createContext]. This lets you consume the nearest current value of
   /// that Context using [context].

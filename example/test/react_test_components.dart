@@ -574,3 +574,37 @@ class _Component2ErrorTestComponent extends react.Component2 {
 }
 
 var component2ErrorTestComponent = react.registerComponent(() => new _Component2ErrorTestComponent(), ['render']);
+
+
+
+class _PureTesterComponent extends react.Component2 {
+  Map get initialState => {
+        "count": 0,
+      };
+
+  dynamic render() {
+    return react.div({
+      "key": "e-cont"
+    }, [
+      react.h3({"key": "e-header"}, "Pure Component Test"),
+      state["count"],
+      react.button({
+              'type': 'button',
+              'key': 'c3-r-button',
+              'className': 'btn btn-primary',
+              'onClick': (_)=> this.setState({'count': state['count'] + 1}),
+            }, 'Update Wrapper State'),
+      pureTestComponent({'value':'test'})
+    ]);
+  }
+}
+var pureTesterComponent = react.registerComponent2(() => new _PureTesterComponent());
+
+
+class _PureTestComponent extends react.PureComponent {
+  dynamic render() {
+    print('rendered');
+    return props['value'];
+  }
+}
+var pureTestComponent = react.registerComponent2(() => new _PureTestComponent());

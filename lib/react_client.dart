@@ -168,7 +168,13 @@ Map<String, dynamic> _unjsifyContext(InteropContextValue interopContext) {
 mixin JsBackedMapComponentFactoryMixin on ReactComponentFactoryProxy {
   @override
   ReactElement build(Map props, [List childrenArgs = const []]) {
-    var children = _generateChildren(childrenArgs, shouldAlwaysBeList: true);
+    var children;
+    if (childrenArgs.isNotEmpty){
+      children = _generateChildren(childrenArgs, shouldAlwaysBeList: true);
+    }
+    if (children == null) {
+      props['children'] = null;
+    }
     var convertedProps = generateExtendedJsProps(props);
     return React.createElement(type, convertedProps, children);
   }
@@ -812,6 +818,7 @@ ReactDartComponentFactoryProxy2 _registerComponent2(
     defaultProps: defaultProps.jsObject,
     contextType: componentInstance.contextType?.jsThis,
     skipMethods: filteredSkipMethods,
+    isPureReactComponent: componentInstance.isPureReactComponent,
     propTypes: jsPropTypes,
   );
 

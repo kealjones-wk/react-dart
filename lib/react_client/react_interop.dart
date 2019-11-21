@@ -641,6 +641,7 @@ class JsComponentConfig2 {
     dynamic contextType,
     JsMap defaultProps,
     JsMap propTypes,
+    bool isPureReactComponent,
     @required List<String> skipMethods,
   });
 }
